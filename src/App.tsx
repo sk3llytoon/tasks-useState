@@ -1,25 +1,41 @@
 import React, {useState} from 'react';
 import './App.css';
+import {NewComponent} from "./NewComponent";
 
 function App() {
 
-  let [a, setA]=useState(0)
+    type FilterType='All'|'Dollars'|'RUBLES'
 
-  const onClickHandler=()=>{
-    setA(++a)
-  }
+    const [money, setMoney] = useState([
+        {banknots: 'Dollars', value: 100, number: ' a1234567890'},
+        {banknots: 'Dollars', value: 50, number: ' z1234567890'},
+        {banknots: 'RUBLES', value: 100, number: ' w1234567890'},
+        {banknots: 'Dollars', value: 100, number: ' e1234567890'},
+        {banknots: 'Dollars', value: 50, number: ' c1234567890'},
+        {banknots: 'RUBLES', value: 100, number: ' r1234567890'},
+        {banknots: 'Dollars', value: 50, number: ' x1234567890'},
+        {banknots: 'RUBLES', value: 50, number: ' v1234567890'},
+    ])
 
-  const onClickReset=()=>{
-    setA(0)
-  }
+    const [filter, setFilter]=useState<FilterType>('All')
 
-  return (
-    <div className="App">
-      <h1>{a}</h1>
-        <button onClick={onClickHandler}>Add Number</button>
-        <button onClick={onClickReset}>Reset</button>
-    </div>
-  );
+    let currentMoney = money;
+    if (filter === 'Dollars') {
+        currentMoney = money.filter((filteredMoney) => filteredMoney.banknots === 'Dollars')
+    }
+    if (filter === 'RUBLES') {
+        currentMoney = money.filter((filteredMoney) => filteredMoney.banknots === 'RUBLES')
+    }
+
+    const onClickFilterHandler = (nameButton: FilterType) => {
+        setFilter(nameButton)
+    }
+
+    return (
+        <>
+            <NewComponent currentMoney={currentMoney} onClickFilterHandler={onClickFilterHandler}/>
+        </>
+    );
 }
 
 export default App;
